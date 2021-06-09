@@ -1,7 +1,9 @@
 <div class="row justify-content-center">
     <div class="col-5">
 
-        <?= form_open('users/create') ?>
+        <h3>Register</h3>
+
+        <?= form_open('/register') ?>
             <div class="form-group my-4">
                 <label>Email address</label>
                 <input type="email" name='email' value="<?= set_value('email') ?>" class="form-control" placeholder="Enter email">
@@ -30,6 +32,7 @@
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary mt-3">Register</button>
             </div>
+        </form>
 
 
     </div>
