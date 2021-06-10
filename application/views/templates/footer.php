@@ -1,6 +1,4 @@
-</div>
-
-<footer class="bg-primary fixed-bottom text-center text-lg-start text-light mt-5">
+<footer class="bg-primary text-center text-lg-start text-light mt-5">
     <!-- Grid container -->
     <div class="container p-4">
         <!--Grid row-->
@@ -39,7 +37,3 @@
     </div>
     <!-- Copyright -->
 </footer>
-
-</body>
-
-</html>

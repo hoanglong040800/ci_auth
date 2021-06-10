@@ -8,8 +8,7 @@ class Pages extends CI_Controller
         }
 
         $data['title'] = ucfirst($page);
-        $this->load->view('templates/header', $data);
-        $this->load->view('pages/' . $page, $data);
-        $this->load->view('templates/footer', $data);
+        $data['main_content'] = 'pages/'.$page;
+        $this->load->view('templates/main_template', $data);
     }
 }
