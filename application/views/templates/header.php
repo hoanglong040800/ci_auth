@@ -21,11 +21,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url('register') ?>">Register</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url('login') ?>">Login</a>
+                    <a class="nav-link" href="<?= base_url('login') ?>">Logout</a>
                 </li>
             </ul>
         </div>

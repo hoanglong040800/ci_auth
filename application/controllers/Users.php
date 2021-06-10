@@ -18,8 +18,6 @@ class Users extends CI_Controller
     {
         $data['title'] = 'Register';
 
-        $this->load->library('form_validation');
-
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
         $this->form_validation->set_rules('pswd', 'Password', 'required');
         $this->form_validation->set_rules('cf_pswd', 'Confirmation Password', 'required|matches[pswd]');
@@ -43,8 +41,6 @@ class Users extends CI_Controller
         if (empty($data['user'])) {
             show_404();
         } else {
-            $this->load->library('form_validation');
-
             $this->form_validation->set_rules('email', 'Email', "required|valid_email");
             $this->form_validation->set_rules('pswd', 'Password', 'required');
             $this->form_validation->set_rules('cf_pswd', 'Confirmation Password', 'required|matches[pswd]');

@@ -1,6 +1,6 @@
 <html>
 
-<?php $this->load->view('templates/head',$title) ?>
+<?php $this->load->view('templates/head',$title??'CI Auth') ?>
 
 <body">
     <?php $this->load->view('templates/header', $title) ?>
