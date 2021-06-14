@@ -21,7 +21,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url('login') ?>">Logout</a>
+                    <a class="nav-link" href="<?= base_url('/logout') ?>">Logout</a>
                 </li>
             </ul>
         </div>

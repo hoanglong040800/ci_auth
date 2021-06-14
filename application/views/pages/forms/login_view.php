@@ -42,18 +42,19 @@
             var req = $(this).serialize();
 
             $.ajax({
-                url: "<?= base_url('login/process') ?>",
+                url: "<?= base_url('login_controller/process') ?>",
                 type: "POST",
                 data: req,
 
                 success: function(result) {
+                    console.log(result);
                     result = JSON.parse(result);
                     $('#emailErr').html(result.email);
                     $('#pswdErr').html(result.pswd);
                     $('#authErr').html(result.auth);
 
-                    if (!result.auth){
-                        location.href="<?= base_url() ?>";
+                    if (!result.auth && !result.email && !result.pswd){
+                        location.href="<?= base_url() ?>"
                     }
                 },
 

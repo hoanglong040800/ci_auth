@@ -22,6 +22,16 @@ class User_model extends CI_Model
         return $query->row();
     }
 
+    public function get_by_email($email){
+        $query=$this->db
+            ->select()
+            ->from('users')
+            ->where('email',$email)
+            ->get();
+            
+        return $query->row();
+    }
+
     public function authen($email, $password)
     {
         $query = $this->db

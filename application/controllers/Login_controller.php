@@ -1,10 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Login extends CI_Controller
+class Login_controller extends CI_Controller
 {
     public function index()
     {
+        if($this->session->userdata('name')){
+            redirect('/');
+        }
+
         $data['title'] = 'Login';
         $data['main_content'] = 'pages/forms/login_view';
         $this->load->view('templates/minify_template', $data);
@@ -24,6 +28,7 @@ class Login extends CI_Controller
         $this->form_validation->set_rules('email', 'Email', "required|trim|valid_email");
         $this->form_validation->set_rules('pswd', 'Password', 'required|trim');
 
+
         if ($this->form_validation->run() === FALSE) {
             $res['email'] = form_error('email');
             $res['pswd'] = form_error('pswd');
@@ -36,10 +41,18 @@ class Login extends CI_Controller
                 $res['auth'] = 'Your email or password is invalid';
                 echo json_encode($res);
                 exit();
-            } else {
+            }
+
+            else { 
                 echo json_encode($res);
+                $this->session->set_userdata('name', $query->email);
                 exit();
             }
         }
+    }
+
+    public function logout(){
+        $this->session->unset_userdata('name');
+        redirect('/login');
     }
 }
