@@ -44,11 +44,12 @@ class User_model extends CI_Model
         return $query->row();
     }
 
-    public function save()
+    public function insert($email, $password, $role='subscriber')
     {
         $data = array(
-            'email' => $this->input->post('email'),
-            'password' => $this->input->post('pswd'),
+            'email' => $email,
+            'password' => $password,
+            'role' => $role,
         );
 
         return $this->db->insert('users', $data);

@@ -5,7 +5,7 @@ class Login_controller extends CI_Controller
 {
     public function index()
     {
-        if($this->session->userdata('name')){
+        if($this->session->userdata('logged_in')){
             redirect('/');
         }
 
@@ -22,6 +22,7 @@ class Login_controller extends CI_Controller
             'email' => '',
             'pswd' => '',
             'auth' => '',
+            'remember'=> $this->input->post('remember'),
         );
 
 
@@ -32,27 +33,46 @@ class Login_controller extends CI_Controller
         if ($this->form_validation->run() === FALSE) {
             $res['email'] = form_error('email');
             $res['pswd'] = form_error('pswd');
-            echo json_encode($res);
-            exit();
-        } else {
+        }
+        
+        else {
             $query = $this->user_model->authen($this->input->post('email'), $this->input->post('pswd'));
 
             if (empty($query)) {
                 $res['auth'] = 'Your email or password is invalid';
-                echo json_encode($res);
-                exit();
             }
 
             else { 
-                echo json_encode($res);
-                $this->session->set_userdata('name', $query->email);
-                exit();
+                if ($res['remember']){
+                    // $this->remember_me($query);
+                }
+
+                $this->create_session($query);
             }
         }
+
+        echo json_encode($res);
+    }
+
+    public function remember_me($query){
+        $this->load->helper('cookie');
+        $this->load->helper('date');
+        $format = "%Y-%m-%d %h:%i";
+
+        $token=md5(uniqid(rand(),TRUE));
+        $login_timestamp = mdate($format);
+
+        echo $login_timestamp;
+    }
+
+    public function create_session($query){
+        $this->session->sess_expiration=1;
+        $this->session->set_userdata('logged_in', TRUE);
+        $this->session->set_userdata('email', $query->email);
     }
 
     public function logout(){
-        $this->session->unset_userdata('name');
-        redirect('/login');
+        $this->session->sess_destroy();
+        redirect('login');
     }
 }

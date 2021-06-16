@@ -7,7 +7,9 @@
         </div>
 
         <!-- FORM -->
-        <form id="form" method="POST">
+        <form id='form' method='POST'>
+            <input type="hidden" name="<?= $this->security->get_csrf_token_name();?>" value="<?= $this->security->get_csrf_hash();?>">
+            
             <div class="form-group my-4">
                 <label>Email address</label>
                 <input type="text" name='email' class="form-control" placeholder="Enter email" value="long@mail.com">
@@ -18,6 +20,11 @@
                 <label>Password</label>
                 <input type="password" name='pswd' class="form-control" placeholder="Enter password" value="123">
                 <div class="text-danger mt-2" id="pswdErr"></div>
+            </div>
+
+            <div class="form-group my-4">
+                <input type="checkbox" name="remember" checked="TRUE" class="form-check-input"/>
+                <label>Remember Me</label>
             </div>
 
             <div class="text-danger mt-3" id="authErr"></div>
@@ -42,7 +49,7 @@
             var req = $(this).serialize();
 
             $.ajax({
-                url: "<?= base_url('login_controller/process') ?>",
+                url: "<?= base_url('login/process') ?>",
                 type: "POST",
                 data: req,
 
@@ -54,7 +61,7 @@
                     $('#authErr').html(result.auth);
 
                     if (!result.auth && !result.email && !result.pswd){
-                        location.href="<?= base_url() ?>"
+                        location.href="<?= base_url('') ?>"
                     }
                 },
 

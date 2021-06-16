@@ -1,36 +1,68 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Users extends CI_Controller
+class Users_controller extends CI_Controller
 {
 
 
     public function index()
     {
-        $data['title'] = 'Account Manager';
+        if(empty($this->session->userdata('email'))){
+            redirect('login');
+        }
+
+        $data['title'] = 'Users Manager';
         $data['users'] = $this->user_model->get_all();
 
-        $data['main_content'] = 'pages/account_manager';
+        $data['main_content'] = 'pages/users_view';
         $this->load->view('templates/main_template', $data);
     }
 
     public function create()
     {
+        if($this->session->userdata('logged_in')){
+            redirect('/');
+        }
+
         $data['title'] = 'Register';
+        $data['main_content'] = 'pages/forms/register_view';
+        $this->load->view('templates/minify_template', $data);
+    }
+
+    public function process()
+    {
+        // $req = json_decode($this->input->raw_input_stream);
+
+        $res = array(
+            'email' => '',
+            'pswd' => '',
+            'cf_pswd' => '',
+            'terms' => '',
+            'is_valid' => FALSE,
+        );
+
 
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
         $this->form_validation->set_rules('pswd', 'Password', 'required');
         $this->form_validation->set_rules('cf_pswd', 'Confirmation Password', 'required|matches[pswd]');
         $this->form_validation->set_rules('terms', 'Terms and Condition', 'required');
 
-        if ($this->form_validation->run() === FALSE) {
-            $data['main_content'] = 'pages/forms/register_view';
-            $this->load->view('templates/minify_template', $data);
-        } else {
-            $this->user_model->save();
-            $data['main_content'] = 'pages/sd/formsuccess';
-            $this->load->view('templates/minify_template', $data);
+        if($this->form_validation->run() === FALSE){
+            $res['email'] = form_error('email');
+            $res['pswd'] = form_error('pswd');
+            $res['cf_pswd'] = form_error('cf_pswd');
+            $res['terms'] = form_error('terms');
         }
+
+        else {
+            $res['is_valid'] = TRUE;
+            $this->user_model->insert(
+                $this->input->post('email'),
+                $this->input->post('pswd')
+            );
+        }
+
+        echo json_encode($res);
     }
 
     public function modify($id)

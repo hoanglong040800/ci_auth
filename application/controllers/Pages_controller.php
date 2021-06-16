@@ -7,7 +7,7 @@ class Pages_controller extends CI_Controller
             show_404();
         }
 
-        if(empty($this->session->userdata('name'))){
+        if(!$this->session->userdata('logged_in')){
             redirect('login');
         }
 
