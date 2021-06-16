@@ -9,6 +9,14 @@ class Login_controller extends CI_Controller
             redirect('/');
         }
 
+        if ( get_cookie('remember_me_token') ){
+            // get mail from cookie
+            $this->create_session(
+                get_cookie('remember_me_token', TRUE)
+            );
+
+        }
+
         $data['title'] = 'Login';
         $data['main_content'] = 'pages/forms/login_view';
         $this->load->view('templates/minify_template', $data);
@@ -44,31 +52,40 @@ class Login_controller extends CI_Controller
 
             else { 
                 if ($res['remember']){
-                    // $this->remember_me($query);
+                    $this->remember_me($query->email);
                 }
 
-                $this->create_session($query);
+                $this->create_session($query->email);
             }
         }
 
         echo json_encode($res);
     }
 
-    public function remember_me($query){
-        $this->load->helper('cookie');
+    public function remember_me($email){
         $this->load->helper('date');
-        $format = "%Y-%m-%d %h:%i";
 
-        $token=md5(uniqid(rand(),TRUE));
-        $login_timestamp = mdate($format);
+        // $format = "%Y-%m-%d %h:%i";
+        // $token = md5(uniqid(rand(),TRUE));
+        // $login_timestamp = mdate($format);
 
-        echo $login_timestamp;
+        $cookie_data = array(
+            'name'=> 'remember_me_token',
+            'value'=> $email,
+            'expire'=> 30,
+            'secure' => TRUE,
+            'httponly' => TRUE,
+        );
+
+        set_cookie($cookie_data);
+
+        // echo var_export(get_cookie('remember_me_token', TRUE));
     }
 
-    public function create_session($query){
-        $this->session->sess_expiration=1;
+    public function create_session($email){
+        $this->session->sess_expiration = 15;
         $this->session->set_userdata('logged_in', TRUE);
-        $this->session->set_userdata('email', $query->email);
+        $this->session->set_userdata('email', $email);
     }
 
     public function logout(){
