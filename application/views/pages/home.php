@@ -4,5 +4,5 @@
 </h3>
 
 <h3>
-    Your cookie is 
+    Your cookie is <span class="text-warning"><?= $cookie_data ?></span>
 </h3>

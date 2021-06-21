@@ -9,9 +9,12 @@ class Pages_controller extends My_Controller
             show_404();
         }
 
+        // DATA
         $data['title'] = ucfirst($page);
         $data['sess_data'] = $this->session->userdata('sess_data');
+        $data['cookie_data'] = get_cookie('remember_me_token', TRUE);
 
+        // VIEW
         $data['main_content'] = 'pages/'.$page;
         $this->load->view('templates/main_template', $data);
     }

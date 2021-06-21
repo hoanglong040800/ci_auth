@@ -54,7 +54,7 @@
                 data: req,
 
                 success: function(result) {
-                    // console.log(result);
+                    console.log(result);
                     result = JSON.parse(result);
                     $('#emailErr').html(result.email);
                     $('#pswdErr').html(result.pswd);
