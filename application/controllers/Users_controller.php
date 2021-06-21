@@ -1,18 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Users_controller extends CI_Controller
+class Users_controller extends My_Controller
 {
-
-
     public function index()
     {
-        if(empty($this->session->userdata('email'))){
+        if(empty($this->session->userdata('sess_data'))){
             redirect('login');
         }
 
         $data['title'] = 'Users Manager';
         $data['users'] = $this->user_model->get_all();
+
+        $data['sess_email']=$this->session->get_userdata('email');
 
         $data['main_content'] = 'pages/users_view';
         $this->load->view('templates/main_template', $data);
@@ -20,13 +20,11 @@ class Users_controller extends CI_Controller
 
     public function create()
     {
-        if($this->session->userdata('logged_in')){
-            redirect('/');
-        }
+        parent::check_sess();
 
         $data['title'] = 'Register';
         $data['main_content'] = 'pages/forms/register_view';
-        $this->load->view('templates/minify_template', $data);
+        $this->load->view('templates/minified_template', $data);
     }
 
     public function process()
@@ -79,12 +77,13 @@ class Users_controller extends CI_Controller
 
             if ($this->form_validation->run() === FALSE) {
                 $data['main_content'] = 'pages/forms/modify_user';
-                $this->load->view('templates/minify_template', $data);
-            } else {
+            }
+            else {
                 $this->user_model->update();
                 $data['main_content'] = 'pages/sd/formsuccess';
-                $this->load->view('templates/minify_template', $data);
             }
+
+            $this->load->view('templates/minified_template', $data);
         }
     }
 

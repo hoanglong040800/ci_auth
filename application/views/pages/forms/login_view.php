@@ -12,18 +12,18 @@
             
             <div class="form-group my-4">
                 <label>Email address</label>
-                <input type="text" name='email' class="form-control" placeholder="Enter email" value="long@mail.com">
+                <input type="text" name='email' id="email" class="form-control" placeholder="Enter email" value="long@mail.com">
                 <div class="text-danger mt-2" id="emailErr"></div>
             </div>
 
             <div class="form-group my-4">
                 <label>Password</label>
-                <input type="password" name='pswd' class="form-control" placeholder="Enter password" value="123">
+                <input type="password" name='pswd' id="pswd" class="form-control" placeholder="Enter password" value="123">
                 <div class="text-danger mt-2" id="pswdErr"></div>
             </div>
 
             <div class="form-group my-4">
-                <input type="checkbox" name="remember" checked="TRUE" class="form-check-input"/>
+                <input type="checkbox" name="remember" id="remember" checked="TRUE" class="form-check-input"/>
                 <label>Remember Me</label>
             </div>
 
@@ -44,7 +44,7 @@
             // var req = $(this)
             //     .serializeArray()
             //     .reduce(function(a, x) { a[x.name] = x.value; return a; }, {});
-            // req=JSON.stringify(req);
+            // req = JSON.stringify(req);
 
             var req = $(this).serialize();
 
@@ -54,7 +54,7 @@
                 data: req,
 
                 success: function(result) {
-                    console.log(result);
+                    // console.log(result);
                     result = JSON.parse(result);
                     $('#emailErr').html(result.email);
                     $('#pswdErr').html(result.pswd);

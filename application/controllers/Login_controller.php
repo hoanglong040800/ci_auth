@@ -1,38 +1,44 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Login_controller extends CI_Controller
+class Login_controller extends My_Controller
 {
+    public function __construct(){
+        parent::__construct();
+        parent::check_sess();
+    }
+
     public function index()
     {
-        if($this->session->userdata('logged_in')){
-            redirect('/');
-        }
+        // Login controller
+        // middleware -> core -> my_controller -> login extends my controller
 
-        if ( get_cookie('remember_me_token') ){
-            // get mail from cookie
-            $this->create_session(
-                get_cookie('remember_me_token', TRUE)
-            );
+        
+        // Khi em login thanh cong ma nhan  remember:
+        // tao value cookie -> value + user id -> luu db
+        // cookie lưu chuoi token
+        // key -> chuoi 20char + time
+        // dung value cookie query user id -> email
 
-        }
+        // PK: token dai 20char
+        // col: userid
+        // timestamp
+
 
         $data['title'] = 'Login';
         $data['main_content'] = 'pages/forms/login_view';
-        $this->load->view('templates/minify_template', $data);
+        
+        $this->load->view('templates/minified_template', $data);
     }
 
     public function process()
     {
-        // $req = json_decode($this->input->raw_input_stream);
-
         $res = array(
             'email' => '',
             'pswd' => '',
             'auth' => '',
             'remember'=> $this->input->post('remember'),
         );
-
 
         $this->form_validation->set_rules('email', 'Email', "required|trim|valid_email");
         $this->form_validation->set_rules('pswd', 'Password', 'required|trim');
@@ -52,10 +58,10 @@ class Login_controller extends CI_Controller
 
             else { 
                 if ($res['remember']){
-                    $this->remember_me($query->email);
+                    // $this->remember_me($query);
                 }
 
-                $this->create_session($query->email);
+                $this->create_session($query);
             }
         }
 
@@ -82,10 +88,15 @@ class Login_controller extends CI_Controller
         // echo var_export(get_cookie('remember_me_token', TRUE));
     }
 
-    public function create_session($email){
+    public function create_session($query){
+        $sess_data = array(
+            'id' => $query->id,
+            'email' => $query->email,
+            'role' => $query->role,
+        );
+
         $this->session->sess_expiration = 15;
-        $this->session->set_userdata('logged_in', TRUE);
-        $this->session->set_userdata('email', $email);
+        $this->session->set_userdata('sess_data', $sess_data);
     }
 
     public function logout(){

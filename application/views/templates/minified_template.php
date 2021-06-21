@@ -19,7 +19,9 @@ $this->load->view('templates/head', $title);
     
 
         <main class="bg-light p-5">
+
             <?php $this->load->view($main_content) ?>
+            
         </main>
 
 
